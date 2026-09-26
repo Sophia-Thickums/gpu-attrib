@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gpu-attrib"
+version = "0.1.0"
+description = "Which GPU is actually doing the work? Engine-time attribution for multi-GPU Linux boxes."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [{name = "Sophia Marie DeClue"}]
+keywords = ["gpu", "vulkan", "linux", "multi-gpu", "amd", "intel", "diagnostics", "drm"]
+classifiers = [
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Topic :: System :: Hardware",
+  "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/Sophia-Thickums/gpu-attrib"
+
+[project.scripts]
+gpu-attrib = "gpu_attrib:main"
+
+[tool.setuptools]
+py-modules = ["gpu_attrib"]
