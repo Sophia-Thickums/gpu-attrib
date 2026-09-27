@@ -440,8 +440,34 @@ def _snapshot(pid):
     }
 
 
+
+def selftest() -> int:
+    """Prove the measurement diverges the way the tool claims it does."""
+    import sys as _s
+    print("gpu_attrib --selftest")
+    print("=" * 60)
+    ok = True
+    gpus = pci_db()
+    ok &= len(gpus) > 0
+    print(f"  {'PASS' if len(gpus) > 0 else 'FAIL'}  enumerates GPUs -> {len(gpus)} found")
+
+    recs = read_fdinfo(os.getpid())
+    print(f"  --    reads own fdinfo -> {len(recs)} drm fds")
+    if recs:
+        snap = _snapshot(os.getpid())
+        ok4 = snap is not None and "opened_devices" in snap
+        ok &= ok4
+        print(f"  {'PASS' if ok4 else 'FAIL'}  opened-vs-worked distinguishable -> "
+              f"opened={len(snap['opened_devices'])} worked={len(snap['workers'])}")
+    print("=" * 60)
+    print("selftest " + ("PASSED" if ok else "FAILED"))
+    return 0 if ok else 1
+
 if __name__ == "__main__":
     try:
+        if "--selftest" in sys.argv:
+            sys.exit(selftest())
         sys.exit(main())
     except KeyboardInterrupt:
         sys.exit(130)
+
